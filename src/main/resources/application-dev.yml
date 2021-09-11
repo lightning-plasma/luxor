@@ -1,3 +1,9 @@
 reply:
   label:
     text: 'my friend'
+
+logging:
+  level:
+    com:
+      archetype:
+        luxor: DEBUG

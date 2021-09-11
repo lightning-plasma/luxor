@@ -1,7 +1,7 @@
 package com.archetype.luxor.web.controller
 
 import com.archetype.luxor.web.entity.Reply
-import org.hibernate.validator.constraints.Length
+import mu.KotlinLogging
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -27,7 +27,12 @@ class LuxorController(
     fun hello(
         @PathVariable("name") @Size(min = 3, max = 10) name: String
     ): Reply {
+        logger.debug { "name=$name" }
         return Reply("Hello ${customLabel.text}, $name")
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger { }
     }
 }
 
