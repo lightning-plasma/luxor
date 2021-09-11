@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  postgres:
+#   image: postgres:13-buster
+    build: ./docker/postgres
+    container_name: luxor-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ramesses
+      POSTGRES_DB: luxor
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  postgresql-data:
+    driver: local
