@@ -15,15 +15,15 @@ import javax.validation.constraints.Size
 
 @RestController
 @RequestMapping(
-    path = ["/luxor"],
+    path = ["/hello"],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @Validated
 @EnableConfigurationProperties(value = [CustomLabel::class])
-class LuxorController(
+class HelloController(
     private val customLabel: CustomLabel
 ) {
-    @GetMapping("hello/{name}")
+    @GetMapping("{name}")
     fun hello(
         @PathVariable("name") @Size(min = 3, max = 10) name: String
     ): Reply {
