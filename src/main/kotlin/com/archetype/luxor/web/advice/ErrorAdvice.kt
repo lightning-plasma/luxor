@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 import java.lang.Exception
+import javax.validation.ConstraintViolationException
 
 @RestControllerAdvice
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -36,6 +37,14 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
         } else {
             ResponseEntity(body, headers, status)
         }
+
+    @ExceptionHandler(value = [ConstraintViolationException::class])
+    fun handleValidationException(ex: ConstraintViolationException): ResponseEntity<Any> =
+        ResponseEntity(
+            ErrorResponse("invalid parameter: detail: [${ex.localizedMessage}]"),
+            null,
+            HttpStatus.BAD_REQUEST,
+        )
 
     // どこでも拾われなかった例外はここで処理する
     @ExceptionHandler(value = [Throwable::class])
