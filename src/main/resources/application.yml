@@ -9,7 +9,3 @@ spring:
   web:
     resources:
       add-mappings: false
-
-reply:
-  label:
-    text: 'my friend'
