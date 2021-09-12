@@ -28,3 +28,10 @@ spring:
       read-only: false
       connection-init-sql: "SELECT 1"
       auto-commit: false
+
+mybatis:
+  configuration:
+    cache-enabled: true
+    default-executor-type: reuse
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
