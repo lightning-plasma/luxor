@@ -19,4 +19,12 @@ class ApiErrorAdvice {
             null,
             HttpStatus.NOT_FOUND,
         )
+
+    @ExceptionHandler(value = [IllegalArgumentException::class])
+    fun handleBadRequest(ex: IllegalArgumentException): ResponseEntity<Any> =
+        ResponseEntity(
+            ErrorResponse(ex.message ?: "illegal argument ;-("),
+            null,
+            HttpStatus.BAD_REQUEST,
+        )
 }

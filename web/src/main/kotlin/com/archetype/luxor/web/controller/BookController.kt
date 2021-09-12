@@ -1,6 +1,7 @@
 package com.archetype.luxor.web.controller
 
 import com.archetype.luxor.application.usecase.FetchBook
+import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.response.BookResponse
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
 
 @RestController
 @RequestMapping(
@@ -24,7 +24,7 @@ class BookController(
     fun list(): List<BookResponse> =
         fetchBook.list().map {
             BookResponse(
-                isbn = it.isbn,
+                isbn = it.isbn.asString(),
                 title = it.title,
                 author = it.author,
                 publisher = it.publisher,
@@ -36,9 +36,9 @@ class BookController(
     fun get(
         @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String
     ): BookResponse {
-        val book = fetchBook.get(isbn)
+        val book = fetchBook.get(Isbn(isbn))
         return BookResponse(
-            isbn = book.isbn,
+            isbn = book.isbn.asString(),
             title = book.title,
             author = book.author,
             publisher = book.publisher,
