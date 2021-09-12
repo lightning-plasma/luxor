@@ -4,6 +4,7 @@ import com.archetype.luxor.application.repository.BookRepository
 import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.domain.error.NotFoundException
+import com.archetype.luxor.infra.advice.DataAccessExceptionAdvice
 import com.archetype.luxor.infra.mapper.BookMapper
 import org.springframework.stereotype.Repository
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository
 class BookRepositoryImpl(
     private val bookMapper: BookMapper
 ) : BookRepository {
+    @DataAccessExceptionAdvice("BookRepository#findAll")
     override fun findAll(): List<Book> =
         bookMapper.findAll().map {
             Book(
@@ -22,6 +24,7 @@ class BookRepositoryImpl(
             )
         }
 
+    @DataAccessExceptionAdvice("BookRepository#isbn")
     override fun find(isbn: Isbn): Book =
         bookMapper.find(isbn.asString())?.let {
             Book(

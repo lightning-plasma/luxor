@@ -1,7 +1,7 @@
 dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
-
+    implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
     runtimeOnly("org.postgresql:postgresql")
