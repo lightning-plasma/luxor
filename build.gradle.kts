@@ -1,38 +1,55 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.5.4"
+	id("org.springframework.boot") version "2.5.4" apply false
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.5.30"
-	kotlin("plugin.spring") version "1.5.30"
+	id("java")
+	kotlin("jvm") version "1.5.30" apply false
+	kotlin("plugin.spring") version "1.5.30" apply false
 }
-
-group = "com.archetype"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
 }
 
-dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
-	runtimeOnly("org.postgresql:postgresql")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+allprojects {
+	group = "com.archetype"
+	version = "0.0.1-SNAPSHOT"
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "11"
+subprojects {
+	apply {
+		plugin("org.jetbrains.kotlin.jvm")
+		plugin("org.jetbrains.kotlin.plugin.spring")
 	}
-}
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+	repositories {
+		mavenCentral()
+	}
+
+	java.sourceCompatibility = JavaVersion.VERSION_11
+	java.targetCompatibility = JavaVersion.VERSION_11
+
+	dependencies {
+		val implementation by configurations
+		val testImplementation by configurations
+
+		// https://docs.gradle.org/current/userguide/platforms.html
+		implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
+
+		implementation("org.jetbrains.kotlin:kotlin-reflect")
+		testImplementation("io.mockk:mockk:1.12.0")
+	}
+
+	// https://github.com/gradle/kotlin-dsl-samples/blob/master/samples/multi-kotlin-project-config-injection/build.gradle.kts
+	tasks.withType<KotlinCompile>().configureEach {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = "11"
+		}
+	}
+
+	tasks.withType<Test> {
+		useJUnitPlatform()
+	}
 }
