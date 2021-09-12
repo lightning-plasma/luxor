@@ -1,7 +1,6 @@
 version: '3.8'
 services:
   postgres:
-#   image: postgres:13-buster
     build: ./docker/postgres
     container_name: luxor-db
     ports:

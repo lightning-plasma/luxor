@@ -14,3 +14,17 @@ spring:
   web:
     resources:
       add-mappings: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/luxor
+    username: ${POSTGRES_USER:ramesses}
+    password: ${POSTGRES_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 0
+      idle-timeout: 100000
+      max-lifetime: 3000000
+      read-only: false
+      connection-init-sql: "SELECT 1"
+      auto-commit: false
