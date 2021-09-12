@@ -9,4 +9,6 @@ class FetchBook(
     private val bookRepository: BookRepository
 ) {
     fun list(): List<Book> = bookRepository.findAll()
+
+    fun get(isbn: String): Book = bookRepository.find(isbn)
 }

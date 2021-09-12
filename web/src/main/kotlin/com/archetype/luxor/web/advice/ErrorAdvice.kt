@@ -1,6 +1,8 @@
 package com.archetype.luxor.web.advice
 
 import com.archetype.luxor.web.response.ErrorResponse
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -15,6 +17,7 @@ import javax.validation.ConstraintViolationException
 
 @RestControllerAdvice
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+@Order(Ordered.LOWEST_PRECEDENCE)
 class CommonErrorAdvice : ResponseEntityExceptionHandler() {
     override fun handleExceptionInternal(
         ex: Exception,
