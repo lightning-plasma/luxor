@@ -11,9 +11,9 @@ import java.sql.ResultSet
 class BookRepositoryImpl(
     private val jdbcTemplate: JdbcTemplate
 ) : BookRepository {
-    private val bookMapper: RowMapper<Book> =
+    private val bookMapper: RowMapper<com.archetype.luxor.infra.entity.Book> =
         RowMapper { rs: ResultSet, _: Int ->
-            Book(
+            com.archetype.luxor.infra.entity.Book(
                 isbn = rs.getString("isbn"),
                 title = rs.getString("title"),
                 author = rs.getString("author"),
@@ -26,5 +26,13 @@ class BookRepositoryImpl(
         jdbcTemplate.query(
             "SELECT isbn, title, author, publisher, price FROM main.book",
             bookMapper
-        )
+        ).map {
+            Book(
+                isbn = it.isbn,
+                title = it.title,
+                author = it.author,
+                publisher = it.publisher,
+                price = it.price
+            )
+        }
 }
