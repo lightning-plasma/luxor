@@ -75,6 +75,6 @@ class CommonErrorAdvice(
         val errors = ex.bindingResult.fieldErrors.map {
             it.field + ": " + messageSourceAccessor.getMessage(it)
         }
-        return errors.joinToString(",")
+        return errors.joinToString(", ")
     }
 }
