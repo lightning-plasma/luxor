@@ -1,24 +1,31 @@
 package com.archetype.luxor.web.advice
 
 import com.archetype.luxor.web.response.ErrorResponse
+import org.springframework.context.MessageSource
+import org.springframework.context.support.MessageSourceAccessor
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.lang.Exception
 import javax.validation.ConstraintViolationException
+
 
 @RestControllerAdvice
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 @Order(Ordered.LOWEST_PRECEDENCE)
-class CommonErrorAdvice : ResponseEntityExceptionHandler() {
+class CommonErrorAdvice(
+    messageSource: MessageSource
+) : ResponseEntityExceptionHandler() {
+    private val messageSourceAccessor: MessageSourceAccessor = MessageSourceAccessor(messageSource)
+
     override fun handleExceptionInternal(
         ex: Exception,
         body: Any?,
@@ -28,8 +35,13 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any> =
         if (body !is ErrorResponse) {
             val response = when {
-                status.is4xxClientError ->
-                    ErrorResponse("no handler found")
+                status.is4xxClientError -> {
+                    if (ex is MethodArgumentNotValidException) {
+                        ErrorResponse(validationErrorMessage(ex))
+                    } else {
+                        ErrorResponse("no handler found")
+                    }
+                }
                 status.is5xxServerError ->
                     ErrorResponse("something wrong ;-(")
                 else ->
@@ -57,4 +69,12 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
             null,
             HttpStatus.INTERNAL_SERVER_ERROR,
         )
+
+    // FIXME: こんなんでいいんだっけ ;-(
+    private fun validationErrorMessage(ex: MethodArgumentNotValidException): String {
+        val errors = ex.bindingResult.fieldErrors.map {
+            it.field + ": " + messageSourceAccessor.getMessage(it)
+        }
+        return errors.joinToString(",")
+    }
 }

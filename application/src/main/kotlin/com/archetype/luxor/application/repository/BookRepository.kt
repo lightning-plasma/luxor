@@ -7,4 +7,6 @@ interface BookRepository {
     fun findAll(): List<Book>
 
     fun find(isbn: Isbn): Book
+
+    fun register(book: Book)
 }

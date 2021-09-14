@@ -1,12 +1,18 @@
 package com.archetype.luxor.web.controller
 
+import com.archetype.luxor.application.usecase.RegisterBook
 import com.archetype.luxor.application.usecase.FetchBook
+import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
+import com.archetype.luxor.web.request.BookRequest
 import com.archetype.luxor.web.response.BookResponse
+import com.archetype.luxor.web.response.ResultResponse
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.Pattern
@@ -18,7 +24,8 @@ import javax.validation.constraints.Pattern
 )
 @Validated
 class BookController(
-    private val fetchBook: FetchBook
+    private val fetchBook: FetchBook,
+    private val registerBook: RegisterBook,
 ) {
     @GetMapping("list")
     fun list(): List<BookResponse> =
@@ -44,5 +51,22 @@ class BookController(
             publisher = book.publisher,
             price = book.price
         )
+    }
+
+    @PostMapping("new")
+    fun new(
+        @RequestBody @Validated book: BookRequest
+    ): ResultResponse {
+        registerBook.invoke(
+            Book(
+                isbn = Isbn(book.isbn),
+                title = book.title,
+                author = book.author,
+                publisher = book.publisher,
+                price = book.price
+            )
+        )
+
+        return ResultResponse("ok")
     }
 }
