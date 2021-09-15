@@ -12,7 +12,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.0.10")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.mockito")
