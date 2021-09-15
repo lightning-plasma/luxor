@@ -35,3 +35,21 @@ mybatis:
     default-executor-type: reuse
     map-underscore-to-camel-case: true
     default-statement-timeout: 30
+
+management:
+  health:
+    db:
+      enabled: false
+  server:
+    port: 8081
+  # https://spring.pleiades.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.exposing
+  endpoints:
+    web:
+      base-path: "/"
+      exposure:
+        include: "*"
+  trace:
+    http:
+      # see: org.springframework.boot.actuate.trace.http.Include
+      # https://spring.pleiades.io/spring-boot/docs/current/api/org/springframework/boot/actuate/trace/http/Include.html
+      include: REQUEST_HEADERS, REMOTE_ADDRESS, COOKIE_HEADERS
