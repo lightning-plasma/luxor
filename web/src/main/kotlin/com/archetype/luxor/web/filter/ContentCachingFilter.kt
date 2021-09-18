@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class ContentCachingFilter : OncePerRequestFilter() {
+    // HttpServletRequest, HttpServletResponseをContentCachingWrapperに変換する
+    // contentAsByteArrayがcacheされるので、afterCompletionでLog出力に利用できるようになる
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

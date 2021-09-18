@@ -28,11 +28,13 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
     }
 
     private fun traceRequest(request: HttpServletRequest, requestType: Class<*>?) {
+        // contentCachingFilterで変換していたContentCachingWrapperに戻す
         val requestWrapper = WebUtils.getNativeRequest(
             request,
             ContentCachingRequestWrapper::class.java
         ) ?: return
 
+        // byteArrayをJsonに変換する
         val body = body(requestWrapper.contentAsByteArray, requestType)
 
         if (body.isNotEmpty()) {
