@@ -9,4 +9,6 @@ interface BookRepository {
     fun find(isbn: Isbn): Book
 
     fun register(book: Book)
+
+    fun update(book: Book)
 }

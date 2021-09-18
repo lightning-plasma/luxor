@@ -2,6 +2,7 @@ package com.archetype.luxor.web.controller
 
 import com.archetype.luxor.application.usecase.RegisterBook
 import com.archetype.luxor.application.usecase.FetchBook
+import com.archetype.luxor.application.usecase.UpdateBook
 import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.request.BookRequest
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -26,6 +28,7 @@ import javax.validation.constraints.Pattern
 class BookController(
     private val fetchBook: FetchBook,
     private val registerBook: RegisterBook,
+    private val updateBook: UpdateBook,
 ) {
     @GetMapping("list")
     fun list(): List<BookResponse> =
@@ -60,6 +63,24 @@ class BookController(
         registerBook.invoke(
             Book(
                 isbn = Isbn(book.isbn),
+                title = book.title,
+                author = book.author,
+                publisher = book.publisher,
+                price = book.price
+            )
+        )
+
+        return ResultResponse("ok")
+    }
+
+    @PutMapping("update/{isbn}")
+    fun update(
+        @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String,
+        @RequestBody @Validated book: BookRequest
+    ): ResultResponse {
+        updateBook.invoke(
+            Book(
+                isbn = Isbn(isbn),
                 title = book.title,
                 author = book.author,
                 publisher = book.publisher,

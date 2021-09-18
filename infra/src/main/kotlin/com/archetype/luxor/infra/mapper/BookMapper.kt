@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.Update
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -70,4 +71,22 @@ interface BookMapper {
     fun insert(
         @Param("book") book: Book
     )
+
+    @Update(
+        """
+        UPDATE
+          main.book
+        SET
+          title = #{book.title},
+          author = #{book.author},
+          price = #{book.price},
+          publisher = #{book.publisher},
+          updated_at = #{book.updatedAt}
+        WHERE
+          isbn = #{book.isbn}
+        """
+    )
+    fun update(
+        @Param("book") book: Book
+    ): Int
 }

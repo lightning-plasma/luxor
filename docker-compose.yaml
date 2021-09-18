@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: ramesses
       POSTGRES_DB: luxor
       POSTGRES_PASSWORD: secret
+      TZ: "Asia/Tokyo"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
 

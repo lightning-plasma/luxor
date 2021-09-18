@@ -58,4 +58,23 @@ class BookRepositoryImpl(
             throw ResourceAccessError(e, "This book is already registered")
         }
     }
+
+    @DataAccessExceptionAdvice("BookRepository#update")
+    override fun update(book: Book) {
+        val now = LocalDateTime.now()
+        val count = bookMapper.update(
+            com.archetype.luxor.infra.entity.Book(
+                isbn = book.isbn.asString(),
+                title = book.title,
+                author = book.author,
+                publisher = book.publisher,
+                price = book.price,
+                updatedAt = now
+            )
+        )
+
+        if (count != 1) {
+            throw IllegalStateException("Update failure. updated count=$count")
+        }
+    }
 }
