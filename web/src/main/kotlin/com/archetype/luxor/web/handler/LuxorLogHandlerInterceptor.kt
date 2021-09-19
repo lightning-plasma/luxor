@@ -10,6 +10,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper
 import org.springframework.web.util.WebUtils
 import java.io.IOException
 import java.lang.Exception
+import java.net.URLDecoder
 import java.nio.charset.Charset
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -37,9 +38,10 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
         // byteArrayをJsonに変換する
         val body = body(requestWrapper.contentAsByteArray, requestType)
 
-        if (body.isNotEmpty()) {
-            logger.debug("Request: {}", body)
-        }
+        logger.debug("Request URI: {}{}", requestWrapper.requestURL, queryString(requestWrapper))
+        logger.debug("Request Method: {}", requestWrapper.method)
+        logger.debug("Request Headers: {}", requestHeaders(requestWrapper))
+        logger.debug("Request Body: {}", body)
     }
 
     private fun traceResponse(response: HttpServletResponse, responseType: Class<*>?) {
@@ -48,12 +50,12 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
             ContentCachingResponseWrapper::class.java
         ) ?: return
 
-        val body = body(responseWrapper.contentAsByteArray, responseType)
+        // status: 200 - 399 = ok
+        val body = body(responseWrapper.contentAsByteArray, responseType, responseWrapper.status < 400)
 
-        if (body.isNotEmpty()) {
-            logger.debug("Response: {}", body)
-        }
-
+        logger.debug("Response Headers: {}", responseHeaders(responseWrapper))
+        logger.debug("Response Status Code: {}", responseWrapper.status)
+        logger.debug("Response Body: {}", body)
     }
 
     private fun body(payload: ByteArray, type: Class<*>?, ok: Boolean = true): String {
@@ -69,6 +71,38 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
             logger.info("request log output error. {}", e.stackTraceToString())
             String(payload, Charset.defaultCharset())
         }
+    }
+
+    private fun queryString(request: HttpServletRequest): String =
+        if (request.queryString.isNullOrEmpty()) {
+            ""
+        } else {
+            URLDecoder.decode(request.queryString, "UTF-8")
+        }
+
+    private fun requestHeaders(request: HttpServletRequest): Map<String, String> {
+        // kotlinのmapOfはLinkedHashMap
+        val map = mutableMapOf<String, String>()
+        val headerNames = request.headerNames ?: return map
+
+        while (headerNames.hasMoreElements()) {
+            val key = headerNames.nextElement()
+            val value = request.getHeader(key)
+            map[key] = value
+        }
+
+        return map
+    }
+
+    private fun responseHeaders(response: HttpServletResponse): Map<String, String> {
+        val headerNames = response.headerNames ?: return emptyMap()
+
+        val map = mutableMapOf<String, String>()
+        headerNames.forEach {
+            map[it] = response.getHeader(it)
+        }
+
+        return map
     }
 
     // star-projection
