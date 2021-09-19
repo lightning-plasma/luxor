@@ -85,7 +85,7 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
             )
         } catch (e: IOException) {
             logger.info("request log output error. {}", e.stackTraceToString())
-            String(payload, Charset.defaultCharset())
+            String(payload, Charset.forName("UTF-8"))
         }
     }
 
@@ -93,7 +93,7 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
         if (request.queryString.isNullOrEmpty()) {
             ""
         } else {
-            URLDecoder.decode(request.queryString, "UTF-8")
+            URLDecoder.decode(request.queryString, Charset.forName("UTF-8"))
         }
 
     private fun requestHeaders(request: HttpServletRequest): Map<String, String> {
