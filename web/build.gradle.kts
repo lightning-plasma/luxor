@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":web"))
     implementation(project(":domain"))
     implementation(project(":application"))
     implementation(project(":infra"))

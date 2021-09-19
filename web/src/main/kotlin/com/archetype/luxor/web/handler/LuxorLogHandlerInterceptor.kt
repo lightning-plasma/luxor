@@ -12,11 +12,19 @@ import java.io.IOException
 import java.lang.Exception
 import java.net.URLDecoder
 import java.nio.charset.Charset
+import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class LuxorLogHandlerInterceptor : HandlerInterceptor {
-    private val mapper = jacksonObjectMapper()
+    override fun preHandle(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any
+    ): Boolean {
+        request.setAttribute(startTimeAttributeKey, System.nanoTime())
+        return true
+    }
 
     override fun afterCompletion(
         request: HttpServletRequest,
@@ -26,6 +34,13 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
     ) {
         traceRequest(request, requestType(handler))
         traceResponse(response, responseType(handler))
+
+        // 所要時間をlogging
+        val startNanoSec = request.getAttribute(startTimeAttributeKey)
+        if (startNanoSec is Long) {
+            val elapsed = System.nanoTime() - startNanoSec
+            logger.debug("Elapsed {} ms", TimeUnit.NANOSECONDS.toMillis(elapsed))
+        }
     }
 
     private fun traceRequest(request: HttpServletRequest, requestType: Class<*>?) {
@@ -51,7 +66,8 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
         ) ?: return
 
         // status: 200 - 399 = ok
-        val body = body(responseWrapper.contentAsByteArray, responseType, responseWrapper.status < 400)
+        val body =
+            body(responseWrapper.contentAsByteArray, responseType, responseWrapper.status < 400)
 
         logger.debug("Response Headers: {}", responseHeaders(responseWrapper))
         logger.debug("Response Status Code: {}", responseWrapper.status)
@@ -125,5 +141,7 @@ class LuxorLogHandlerInterceptor : HandlerInterceptor {
 
     companion object {
         private val logger = KotlinLogging.logger { }
+        private val mapper = jacksonObjectMapper()
+        private val startTimeAttributeKey = LuxorLogHandlerInterceptor::class.java.name + "st"
     }
 }
