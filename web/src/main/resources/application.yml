@@ -53,3 +53,15 @@ management:
       # see: org.springframework.boot.actuate.trace.http.Include
       # https://spring.pleiades.io/spring-boot/docs/current/api/org/springframework/boot/actuate/trace/http/Include.html
       include: REQUEST_HEADERS, REMOTE_ADDRESS, COOKIE_HEADERS
+
+reply:
+  label:
+    text: 'my best friend'
+
+# aws
+aws:
+  s3:
+    servers:
+      local:
+        host: http://localhost
+        port: 4566

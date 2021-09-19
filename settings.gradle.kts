@@ -4,5 +4,6 @@ include(
     ":web",
     ":application",
     ":domain",
-    ":infra",
+    ":infra:persistence",
+    ":infra:s3",
 )

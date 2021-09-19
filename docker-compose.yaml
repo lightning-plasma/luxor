@@ -12,6 +12,18 @@ services:
       TZ: "Asia/Tokyo"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=ap-northeast-1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./localstack/:/docker-entrypoint-initaws.d
+      - ./localstack/:/docker-entrypoint-init_sqsaws.d
 
 volumes:
   postgresql-data:

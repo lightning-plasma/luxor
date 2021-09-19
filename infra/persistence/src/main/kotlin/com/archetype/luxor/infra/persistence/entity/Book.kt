@@ -1,4 +1,4 @@
-package com.archetype.luxor.infra.entity
+package com.archetype.luxor.infra.persistence.entity
 
 import java.time.LocalDateTime
 

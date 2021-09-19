@@ -3,6 +3,7 @@ package com.archetype.luxor.web.controller
 import com.archetype.luxor.application.usecase.RegisterBook
 import com.archetype.luxor.application.usecase.FetchBook
 import com.archetype.luxor.application.usecase.UpdateBook
+import com.archetype.luxor.application.usecase.UploadBook
 import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.request.BookRequest
@@ -29,6 +30,7 @@ class BookController(
     private val fetchBook: FetchBook,
     private val registerBook: RegisterBook,
     private val updateBook: UpdateBook,
+    private val uploadBook: UploadBook
 ) {
     @GetMapping("list")
     fun list(): List<BookResponse> =
@@ -89,5 +91,12 @@ class BookController(
         )
 
         return ResultResponse("ok")
+    }
+
+    @GetMapping("upload")
+    fun upload(): ResultResponse {
+        val s3File = uploadBook.invoke()
+
+        return ResultResponse(s3File.uri())
     }
 }

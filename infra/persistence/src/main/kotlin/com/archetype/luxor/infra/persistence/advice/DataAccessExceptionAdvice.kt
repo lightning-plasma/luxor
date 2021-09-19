@@ -1,4 +1,4 @@
-package com.archetype.luxor.infra.advice
+package com.archetype.luxor.infra.persistence.advice
 
 import com.archetype.luxor.domain.error.ResourceAccessError
 import mu.KotlinLogging

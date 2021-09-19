@@ -1,6 +1,6 @@
-package com.archetype.luxor.infra.mapper
+package com.archetype.luxor.infra.persistence.mapper
 
-import com.archetype.luxor.infra.entity.Book
+import com.archetype.luxor.infra.persistence.entity.Book
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
