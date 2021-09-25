@@ -18,6 +18,7 @@ annotation class BookConstraint(
 )
 
 class BookValidator : ConstraintValidator<BookConstraint, BookRequest> {
+    // LocalValidatorFactoryBean を用意して messages.propertiesに設定しても良い (see: validator branch)
     override fun isValid(value: BookRequest, context: ConstraintValidatorContext): Boolean {
         if (TARGET_PUBLISHER == value.publisher && value.price < LOWEST_PRICE) {
             val message = ERROR_MESSAGE.format(

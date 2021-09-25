@@ -3,6 +3,7 @@ package com.archetype.luxor.web.advice
 import com.archetype.luxor.domain.error.NotFoundException
 import com.archetype.luxor.domain.error.ResourceAccessError
 import com.archetype.luxor.web.response.ErrorResponse
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.MessageSource
 import org.springframework.context.support.MessageSourceAccessor
 import org.springframework.core.Ordered
@@ -70,16 +71,10 @@ class ApiErrorAdvice(
             HttpStatus.INTERNAL_SERVER_ERROR,
         )
 
-    // こんなんでいいんだっけ ;-(
     private fun validationErrorMessage(ex: MethodArgumentNotValidException): String {
-        return if (ex.hasFieldErrors()) {
-            ex.bindingResult.fieldErrors.joinToString(", ") {
-                it.field + ": " + messageSourceAccessor.getMessage(it)
-            }
-        } else {
-            ex.bindingResult.allErrors.joinToString(", ") {
-                messageSourceAccessor.getMessage(it)
-            }
+        return ex.bindingResult.allErrors.joinToString(", ") {
+            val foo =messageSourceAccessor.getMessage(it)
+            foo
         }
     }
 }
