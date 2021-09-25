@@ -77,9 +77,11 @@ class ApiErrorAdvice(
                 it.field + ": " + messageSourceAccessor.getMessage(it)
             }
         } else {
-            ex.bindingResult.allErrors.joinToString(", ") {
+            val message = ex.bindingResult.allErrors.joinToString(", ") {
                 messageSourceAccessor.getMessage(it)
             }
+
+            return message
         }
     }
 }

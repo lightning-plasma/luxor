@@ -9,9 +9,12 @@ import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.request.BookRequest
 import com.archetype.luxor.web.response.BookResponse
 import com.archetype.luxor.web.response.ResultResponse
+import com.archetype.luxor.web.validator.BookValidator
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -30,8 +33,14 @@ class BookController(
     private val fetchBook: FetchBook,
     private val registerBook: RegisterBook,
     private val updateBook: UpdateBook,
-    private val uploadBook: UploadBook
+    private val uploadBook: UploadBook,
+    private val validator: BookValidator
 ) {
+    @InitBinder("bookRequest")
+    fun initBinder(binder: WebDataBinder) {
+        binder.addValidators(validator)
+    }
+
     @GetMapping("list")
     fun list(): List<BookResponse> =
         fetchBook.list().map {
