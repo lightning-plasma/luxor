@@ -22,11 +22,13 @@ class ApplicationConfig {
             "classpath:/messages/" + it.filename?.replace(".properties", "")
         }
 
+        // resources/messages配下のpropertiesをmessageSourceにセットする
         messageSource.setBasenames(*basenameList.toTypedArray())
 
         return messageSource
     }
 
+    // messages.properties を validatorで利用する
     @Bean
     fun localValidatorFactoryBean(
         messageSource: MessageSource
