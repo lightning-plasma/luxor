@@ -1,6 +1,7 @@
 package com.archetype.luxor.infra.s3.utils
 
 import com.archetype.luxor.infra.s3.entity.CsvSerializable
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.FileInputStream
