@@ -70,18 +70,8 @@ class ApiErrorAdvice(
             HttpStatus.INTERNAL_SERVER_ERROR,
         )
 
-    // こんなんでいいんだっけ ;-(
-    private fun validationErrorMessage(ex: MethodArgumentNotValidException): String {
-        return if (ex.hasFieldErrors()) {
-            ex.bindingResult.fieldErrors.joinToString(", ") {
-                it.field + ": " + messageSourceAccessor.getMessage(it)
-            }
-        } else {
-            val message = ex.bindingResult.allErrors.joinToString(", ") {
-                messageSourceAccessor.getMessage(it)
-            }
-
-            return message
+    private fun validationErrorMessage(ex: MethodArgumentNotValidException): String =
+        ex.bindingResult.allErrors.joinToString(", ") {
+            messageSourceAccessor.getMessage(it)
         }
-    }
 }
