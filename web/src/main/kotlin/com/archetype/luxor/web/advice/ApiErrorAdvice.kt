@@ -72,9 +72,14 @@ class ApiErrorAdvice(
 
     // こんなんでいいんだっけ ;-(
     private fun validationErrorMessage(ex: MethodArgumentNotValidException): String {
-        val errors = ex.bindingResult.fieldErrors.map {
-            it.field + ": " + messageSourceAccessor.getMessage(it)
+        return if (ex.hasFieldErrors()) {
+            ex.bindingResult.fieldErrors.joinToString(", ") {
+                it.field + ": " + messageSourceAccessor.getMessage(it)
+            }
+        } else {
+            ex.bindingResult.allErrors.joinToString(", ") {
+                messageSourceAccessor.getMessage(it)
+            }
         }
-        return errors.joinToString(", ")
     }
 }

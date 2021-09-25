@@ -1,10 +1,12 @@
 package com.archetype.luxor.web.request
 
+import com.archetype.luxor.web.validator.BookConstraint
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.jetbrains.annotations.NotNull
 import javax.validation.constraints.Size
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@BookConstraint
 data class BookRequest(
     @get:NotNull
     @get:Size(min = 13, max = 13)
