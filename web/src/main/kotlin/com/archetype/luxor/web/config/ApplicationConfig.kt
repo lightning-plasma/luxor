@@ -18,8 +18,10 @@ class ApplicationConfig {
         val messageSource = ReloadableResourceBundleMessageSource()
         messageSource.setDefaultEncoding("UTF-8")
 
-        val basenameList = resources.map {
-            "classpath:/messages/" + it.filename?.replace(".properties", "")
+        val basenameList = resources.mapNotNull { r ->
+            r.filename?.let {
+                "classpath:/messages/" + it.replace(".properties", "")
+            }
         }
 
         // resources/messages配下のpropertiesをmessageSourceにセットする
