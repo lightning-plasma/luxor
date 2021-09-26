@@ -1,0 +1,17 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "GET",
+    "url": "/book-rating/9784622012184"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "genre": "哲学",
+      "rating": "4.2"
+    }
+  }
+}

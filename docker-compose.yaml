@@ -22,8 +22,15 @@ services:
       - DEFAULT_REGION=ap-northeast-1
       - DATA_DIR=/tmp/localstack/data
     volumes:
-      - ./localstack/:/docker-entrypoint-initaws.d
-      - ./localstack/:/docker-entrypoint-init_sqsaws.d
+      - ./docker/localstack/:/docker-entrypoint-initaws.d
+      - ./docker/localstack/:/docker-entrypoint-init_sqsaws.d
+  mock:
+    image: rodolpheche/wiremock:latest-alpine
+    volumes:
+      - "./docker/wiremock:/home/wiremock"
+    ports:
+      - "8080:8080"
+    restart: on-failure
 
 volumes:
   postgresql-data:

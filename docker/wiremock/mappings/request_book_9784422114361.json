@@ -1,0 +1,17 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "url": "/book-rating/9784422114361"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "genre": "コンピュータ",
+      "rating": "4.5"
+    }
+  }
+}
