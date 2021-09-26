@@ -22,7 +22,7 @@ import javax.validation.constraints.Pattern
 
 @RestController
 @RequestMapping(
-    path = ["/book"],
+    path = ["/books"],
     produces = [MediaType.APPLICATION_JSON_VALUE]
 )
 @Validated
@@ -32,7 +32,9 @@ class BookController(
     private val updateBook: UpdateBook,
     private val uploadBook: UploadBook
 ) {
-    @GetMapping("list")
+    // request mappingはURI変数とワイルドカードの数が少ないパターンに優先的にマッチする
+    // https://blog.tagbangers.co.jp/2015/05/21/request-mapping-priority
+    @GetMapping
     fun list(): List<BookResponse> =
         fetchBook.list().map {
             BookResponse(
