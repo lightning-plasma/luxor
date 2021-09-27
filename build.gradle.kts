@@ -38,7 +38,7 @@ subprojects {
 		implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
-		implementation("com.google.guava:guava:30.1.1-jre")
+		implementation("com.google.guava:guava:31.0-jre")
 		testImplementation("io.mockk:mockk:1.12.0")
 	}
 
