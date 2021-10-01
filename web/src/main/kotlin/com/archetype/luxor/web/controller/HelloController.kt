@@ -16,7 +16,7 @@ import javax.validation.constraints.Size
 @RestController
 @RequestMapping(
     path = ["/hello"],
-    produces = [MediaType.APPLICATION_JSON_VALUE]
+    produces = [MediaType.APPLICATION_XML_VALUE]
 )
 @Validated
 @EnableConfigurationProperties(value = [CustomLabel::class])
