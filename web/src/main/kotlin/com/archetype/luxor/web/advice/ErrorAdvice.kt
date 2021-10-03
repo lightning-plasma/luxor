@@ -9,8 +9,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.servlet.NoHandlerFoundException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @RestControllerAdvice
@@ -28,7 +30,12 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
         if (body !is ErrorResponse) {
             val response = when {
                 status.is4xxClientError -> {
-                    ErrorResponse("no handler found")
+                    val message = if (ex is NoHandlerFoundException)
+                        "no handler found"
+                    else
+                        "40x..."
+
+                    ErrorResponse(message)
                 }
                 status.is5xxServerError ->
                     ErrorResponse("something wrong ;-(")
@@ -43,10 +50,7 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
 
     // どこでも拾われなかった例外はここで処理する
     @ExceptionHandler(value = [Throwable::class])
-    fun handleThrowable(ex: Exception, req: WebRequest): ResponseEntity<Any> =
-        ResponseEntity(
-            ErrorResponse("something wrong ;-("),
-            null,
-            HttpStatus.INTERNAL_SERVER_ERROR,
-        )
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleThrowable(ex: Exception, req: WebRequest): ErrorResponse =
+        ErrorResponse("something wrong ;-(")
 }
