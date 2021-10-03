@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.5.4" apply false
+	id("org.springframework.boot") version "2.5.5" apply false
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("java")
 	kotlin("jvm") version "1.5.30" apply false
-	kotlin("plugin.spring") version "1.5.30" apply false
+	kotlin("plugin.spring") version "1.5.31" apply false
 }
 
 repositories {
@@ -38,7 +38,7 @@ subprojects {
 		implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
-		implementation("com.google.guava:guava:30.1.1-jre")
+		implementation("com.google.guava:guava:31.0-jre")
 		testImplementation("io.mockk:mockk:1.12.0")
 	}
 
