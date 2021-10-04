@@ -44,7 +44,6 @@ class ApiErrorAdvice(
     fun handleValidationException(ex: ConstraintViolationException): ErrorResponse =
         ErrorResponse("invalid parameter: detail: [${ex.localizedMessage}]")
 
-
     @ExceptionHandler(value = [MethodArgumentNotValidException::class])
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ErrorResponse =

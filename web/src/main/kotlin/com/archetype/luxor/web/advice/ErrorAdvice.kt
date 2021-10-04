@@ -33,14 +33,14 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
                     val message = if (ex is NoHandlerFoundException)
                         "no handler found"
                     else
-                        "40x..."
+                        ex.message ?: "40x..."
 
                     ErrorResponse(message)
                 }
                 status.is5xxServerError ->
-                    ErrorResponse("something wrong ;-(")
+                    ErrorResponse(ex.message ?: "something wrong ;-(")
                 else ->
-                    ErrorResponse("hmm...")
+                    ErrorResponse(ex.message ?: "hmm...")
             }
 
             ResponseEntity(response, headers, status)
