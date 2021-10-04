@@ -52,5 +52,5 @@ class CommonErrorAdvice : ResponseEntityExceptionHandler() {
     @ExceptionHandler(value = [Throwable::class])
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleThrowable(ex: Exception, req: WebRequest): ErrorResponse =
-        ErrorResponse("something wrong ;-(")
+        ErrorResponse(ex.message ?: "something wrong ;-(")
 }
