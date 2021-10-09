@@ -11,5 +11,12 @@ class BookRatingClientFactory(
     builder: WebClient.Builder,
     bookRatingGatewayConfig: BookRatingGatewayConfig,
 ) : ClientFactory(builder) {
-    val client = baseBuilder.baseUrl(bookRatingGatewayConfig.url()).build()
+    private val client = baseBuilder.baseUrl(bookRatingGatewayConfig.url()).build()
+
+    override fun create(): LuxorWebClient.RequestBuilder = LuxorWebClient
+        .RequestBuilder(client)
+        .timeoutInMillis(3000)
+        .retry(1)
+        .backoffInMillis(100)
+
 }

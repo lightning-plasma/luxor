@@ -7,10 +7,8 @@ sealed class Result<T>
 class Success<T>(val response: T) : Result<T>()
 
 class Failure<Nothing>(
-    message: String? = "An error occurred",
-    val detail: Any? = null,
-    private val method: String,
-    private val uri: String,
+    message: String? = "error",
+    private val request: Request,
     // timeoutエラーの時はresponseがない
     private val response: Response? = null
 ) : Result<Nothing>() {
@@ -23,13 +21,11 @@ class Failure<Nothing>(
         val statusCode: Int
     )
 
-    internal inline fun <reified R> detail(): R? = this.detail as? R
-
     private val message = message ?: ""
     val error: Throwable by lazy {
         ApiError(
             statusCode = response?.statusCode ?: 408,
-            api = "$method $uri",
+            api = "${request.method} ${request.uri}",
             message = this.message
         )
     }
