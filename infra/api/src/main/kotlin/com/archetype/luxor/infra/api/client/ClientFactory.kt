@@ -1,4 +1,4 @@
-package com.archetype.luxor.infra.api.factory
+package com.archetype.luxor.infra.api.client
 
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType

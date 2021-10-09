@@ -3,7 +3,7 @@ package com.archetype.luxor.infra.persistence.repository
 import com.archetype.luxor.application.repository.BookRepository
 import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
-import com.archetype.luxor.domain.error.NotFoundException
+import com.archetype.luxor.domain.error.NotFoundError
 import com.archetype.luxor.domain.error.ResourceAccessError
 import com.archetype.luxor.infra.persistence.advice.DataAccessExceptionAdvice
 import com.archetype.luxor.infra.persistence.mapper.BookMapper
@@ -41,7 +41,7 @@ class BookRepositoryImpl(
                 genre = null,
                 rating = null,
             )
-        } ?: throw NotFoundException("No Book found. isbn=$isbn")
+        } ?: throw NotFoundError("No Book found. isbn=$isbn")
 
     @DataAccessExceptionAdvice("BookRepository#insert")
     override fun register(book: Book) {

@@ -1,4 +1,4 @@
-package com.archetype.luxor.infra.api.factory
+package com.archetype.luxor.infra.api.client
 
 import com.archetype.luxor.infra.api.gateway.BookRatingGatewayConfig
 import org.springframework.boot.context.properties.EnableConfigurationProperties

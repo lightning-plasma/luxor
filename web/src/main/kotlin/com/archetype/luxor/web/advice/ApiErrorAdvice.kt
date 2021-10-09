@@ -1,6 +1,6 @@
 package com.archetype.luxor.web.advice
 
-import com.archetype.luxor.domain.error.NotFoundException
+import com.archetype.luxor.domain.error.NotFoundError
 import com.archetype.luxor.domain.error.ResourceAccessError
 import com.archetype.luxor.web.response.ErrorResponse
 import org.springframework.context.MessageSource
@@ -24,9 +24,9 @@ class ApiErrorAdvice(
 ) {
     private val messageSourceAccessor: MessageSourceAccessor = MessageSourceAccessor(messageSource)
 
-    @ExceptionHandler(value = [NotFoundException::class])
+    @ExceptionHandler(value = [NotFoundError::class])
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleNotFound(ex: NotFoundException): ErrorResponse =
+    fun handleNotFound(ex: NotFoundError): ErrorResponse =
         ErrorResponse(ex.message ?: "data not found ;-(")
 
     @ExceptionHandler(value = [IllegalArgumentException::class])
