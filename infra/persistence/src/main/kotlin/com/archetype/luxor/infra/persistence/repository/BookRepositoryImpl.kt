@@ -16,26 +16,30 @@ class BookRepositoryImpl(
     private val bookMapper: BookMapper
 ) : BookRepository {
     @DataAccessExceptionAdvice("BookRepository#findAll")
-    override fun findAll(): List<Book> =
+    override fun fetchAll(): List<Book> =
         bookMapper.findAll().map {
             Book(
                 isbn = Isbn(it.isbn),
                 title = it.title,
                 author = it.author,
                 publisher = it.publisher,
-                price = it.price
+                price = it.price,
+                genre = null,
+                rating = null,
             )
         }
 
     @DataAccessExceptionAdvice("BookRepository#find")
-    override fun find(isbn: Isbn): Book =
+    override fun fetch(isbn: Isbn): Book =
         bookMapper.find(isbn.asString())?.let {
             Book(
                 isbn = Isbn(it.isbn),
                 title = it.title,
                 author = it.author,
                 publisher = it.publisher,
-                price = it.price
+                price = it.price,
+                genre = null,
+                rating = null,
             )
         } ?: throw NotFoundException("No Book found. isbn=$isbn")
 

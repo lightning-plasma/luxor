@@ -6,4 +6,5 @@ include(
     ":domain",
     ":infra:persistence",
     ":infra:s3",
+    ":infra:api",
 )

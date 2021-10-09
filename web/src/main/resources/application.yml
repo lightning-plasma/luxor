@@ -66,3 +66,10 @@ aws:
       local:
         host: http://localhost
         port: 4566
+
+# api gateway
+gateway:
+  book-rating:
+    protocol: http
+    host: localhost
+    port: 8080

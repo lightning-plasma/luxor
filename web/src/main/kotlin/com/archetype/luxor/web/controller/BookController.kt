@@ -42,7 +42,9 @@ class BookController(
                 title = it.title,
                 author = it.author,
                 publisher = it.publisher,
-                price = it.price
+                price = it.price,
+                genre = it.genre,
+                rating = it.rating
             )
         }
 
@@ -56,7 +58,9 @@ class BookController(
             title = book.title,
             author = book.author,
             publisher = book.publisher,
-            price = book.price
+            price = book.price,
+            genre = book.genre,
+            rating = book.rating
         )
     }
 
@@ -70,7 +74,9 @@ class BookController(
                 title = book.title,
                 author = book.author,
                 publisher = book.publisher,
-                price = book.price
+                price = book.price,
+                genre = null,
+                rating = null,
             )
         )
 
@@ -88,7 +94,9 @@ class BookController(
                 title = book.title,
                 author = book.author,
                 publisher = book.publisher,
-                price = book.price
+                price = book.price,
+                genre = null,
+                rating = null,
             )
         )
 

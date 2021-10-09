@@ -11,7 +11,7 @@ class UploadBook(
     private val bookFileRepository: BookFileRepository
 ) {
     fun invoke(): S3File {
-        val books = bookRepository.findAll()
+        val books = bookRepository.fetchAll()
         return bookFileRepository.upload(books)
     }
 }
