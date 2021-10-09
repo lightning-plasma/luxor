@@ -12,14 +12,14 @@ data class BookRatingErrorResponse(
 
     data class Result(
         val status: Int,
-        val errorMessage: String
+        val message: String
     )
 
     override fun <R> toFailure(request: Failure.Request, response: Failure.Response):
         com.archetype.luxor.infra.api.client.Result<R> =
         this.resultSet?.listResult?.first()?.let {
             Failure(
-                message = it.errorMessage,
+                message = it.message,
                 request = request,
                 response = response
             )

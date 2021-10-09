@@ -95,15 +95,14 @@ class LuxorWebClient(
         private val builder: RequestBuilder,
         val response: ClientResponse
     ) {
-        val failureRequest
-            get() = Failure.Request(
-                uri = builder.uri,
-                method = builder.method.name
-            )
-        val failureResponse
-            get() = Failure.Response(
-                statusCode = response.statusCode().value()
-            )
+        val failureRequest = Failure.Request(
+            uri = builder.uri,
+            method = builder.method.name
+        )
+
+        val failureResponse = Failure.Response(
+            statusCode = response.statusCode().value()
+        )
     }
 
     class Response<R>(
@@ -171,9 +170,9 @@ class LuxorWebClient(
                 val retry = builder.retry
                 val backoffInMillis = builder.backoffInMillis
                 if (retry > 0) {
-                    logger.debug("request${builder.uri}retry: $retry")
+                    logger.debug("request${builder.uri} retry: $retry")
                     if (backoffInMillis > 0) {
-                        logger.debug("request${builder.uri}backoff: $backoffInMillis")
+                        logger.debug("request${builder.uri} backoff: $backoffInMillis")
                         it.retryWhen(
                             Retry.backoff(retry, Duration.ofMillis(backoffInMillis)).jitter(0.75)
                         )
