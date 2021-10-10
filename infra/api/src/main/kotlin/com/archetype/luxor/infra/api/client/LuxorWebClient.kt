@@ -83,8 +83,8 @@ class LuxorWebClient(
 
         val isForm = form != null
 
-        inline fun <reified R> request(
-            crossinline responseToResult: (Response<R>) -> Mono<out Result<R>>
+        fun <R> request(
+            responseToResult: (Response<R>) -> Mono<out Result<R>>
         ): Result<R> =
             LuxorWebClient(
                 builder = this
@@ -92,7 +92,7 @@ class LuxorWebClient(
     }
 
     class Context(
-        private val builder: RequestBuilder,
+        builder: RequestBuilder,
         val response: ClientResponse
     ) {
         val failureRequest = Failure.Request(
@@ -133,8 +133,8 @@ class LuxorWebClient(
                 }
     }
 
-    inline fun <reified R> request(
-        crossinline responseToResult: (Response<R>) -> Mono<out Result<R>>
+    fun <R> request(
+        responseToResult: (Response<R>) -> Mono<out Result<R>>
     ): Result<R> {
         val request = builder.client
             .method(builder.method)
@@ -167,6 +167,7 @@ class LuxorWebClient(
                 }
             }
             .let {
+                // https://www.baeldung.com/spring-webflux-retry
                 val retry = builder.retry
                 val backoffInMillis = builder.backoffInMillis
                 if (retry > 0) {

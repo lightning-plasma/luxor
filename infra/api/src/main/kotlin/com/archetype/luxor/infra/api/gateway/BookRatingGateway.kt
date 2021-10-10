@@ -12,7 +12,6 @@ import org.springframework.boot.context.properties.ConstructorBinding
 class BookRatingGateway(
     private val factory: BookRatingClientFactory
 ) {
-    // https://www.baeldung.com/spring-webflux-retry
     fun fetch(isbn: Isbn): Result<BookRatingResponse> =
         factory.create()
             .get()
