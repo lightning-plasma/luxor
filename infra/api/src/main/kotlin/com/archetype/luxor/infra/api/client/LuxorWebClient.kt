@@ -191,10 +191,8 @@ class LuxorWebClient(
 
         return try {
             // blocking
-            request.block() ?: throw NullPointerException()
+            request.block() ?: Failure(request = Failure.Request(builder.method.name, builder.uri))
         } catch (e: TimeoutException) {
-            Failure(request = Failure.Request(builder.method.name, builder.uri))
-        } catch (e: NullPointerException) {
             Failure(request = Failure.Request(builder.method.name, builder.uri))
         }
     }
