@@ -149,10 +149,10 @@ class LuxorWebClient(
             }
             // リクエストBODYがあればセット
             .let { spec ->
-                builder.form?.run {
-                    spec.body(BodyInserters.fromFormData(this))
-                } ?: builder.body?.run {
-                    spec.body(BodyInserters.fromValue(this))
+                builder.form?.let {
+                    spec.body(BodyInserters.fromFormData(it))
+                } ?: builder.body?.let {
+                    spec.body(BodyInserters.fromValue(it))
                 } ?: spec
             }
             .exchangeToMono {
