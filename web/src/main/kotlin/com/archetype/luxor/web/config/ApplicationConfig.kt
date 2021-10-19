@@ -1,6 +1,8 @@
 package com.archetype.luxor.web.config
 
+import com.archetype.luxor.web.trace.AccessLoggingHttpTraceRepositoryDecorator
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -40,4 +42,10 @@ class ApplicationConfig {
 
         return factory
     }
+
+    @Bean
+    fun httpTraceRepository(): AccessLoggingHttpTraceRepositoryDecorator =
+        AccessLoggingHttpTraceRepositoryDecorator(
+            InMemoryHttpTraceRepository()
+        )
 }
