@@ -7,11 +7,8 @@
   "response": {
     "status": 200,
     "headers": {
-      "Content-Type": "application/json"
+      "Content-Type": "application/xml"
     },
-    "jsonBody": {
-      "genre": "哲学",
-      "rating": "4.2"
-    }
+    "bodyFileName": "response.xml"
   }
 }
