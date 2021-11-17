@@ -23,7 +23,6 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 10
-      idle-timeout: 100000
       max-lifetime: 3000000
       read-only: false
       connection-init-sql: "SELECT 1"
