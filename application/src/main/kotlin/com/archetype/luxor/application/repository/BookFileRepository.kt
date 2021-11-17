@@ -4,5 +4,5 @@ import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.S3File
 
 interface BookFileRepository {
-    fun upload(books: List<Book>): S3File
+    suspend fun upload(books: List<Book>): S3File
 }

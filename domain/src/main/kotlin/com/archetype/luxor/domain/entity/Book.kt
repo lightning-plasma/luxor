@@ -8,4 +8,10 @@ data class Book(
     val price: Int,
     val genre: String?,
     val rating: String?
-)
+) {
+    fun merge(attr: BookAttribute) =
+        this.copy(
+            genre = attr.genre,
+            rating = attr.rating
+        )
+}

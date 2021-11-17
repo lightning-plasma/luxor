@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class BookFileRepositoryImpl(
     private val gateway: BookGateway
 ) : BookFileRepository {
-    override fun upload(books: List<Book>): S3File {
+    override suspend fun upload(books: List<Book>): S3File {
         val key = FILENAME_FORMAT.format(
             DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
         )

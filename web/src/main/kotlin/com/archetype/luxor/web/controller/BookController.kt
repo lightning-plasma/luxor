@@ -9,6 +9,7 @@ import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.request.BookRequest
 import com.archetype.luxor.web.response.BookResponse
 import com.archetype.luxor.web.response.ResultResponse
+import kotlinx.coroutines.reactor.mono
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 import javax.validation.constraints.Pattern
 
 @RestController
@@ -35,7 +37,7 @@ class BookController(
     // request mappingはURI変数とワイルドカードの数が少ないパターンに優先的にマッチする
     // https://blog.tagbangers.co.jp/2015/05/21/request-mapping-priority
     @GetMapping
-    fun list(): List<BookResponse> =
+    fun list(): Mono<List<BookResponse>> = mono {
         fetchBook.list().map {
             BookResponse(
                 isbn = it.isbn.asString(),
@@ -47,13 +49,15 @@ class BookController(
                 rating = it.rating
             )
         }
+    }
 
     @GetMapping("{isbn}")
     fun get(
         @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String
-    ): BookResponse {
+    ): Mono<BookResponse> = mono {
         val book = fetchBook.get(Isbn(isbn))
-        return BookResponse(
+
+        BookResponse(
             isbn = book.isbn.asString(),
             title = book.title,
             author = book.author,
@@ -67,7 +71,7 @@ class BookController(
     @PostMapping("new")
     fun new(
         @RequestBody @Validated book: BookRequest
-    ): ResultResponse {
+    ): Mono<ResultResponse> = mono {
         registerBook.invoke(
             Book(
                 isbn = Isbn(book.isbn),
@@ -80,14 +84,14 @@ class BookController(
             )
         )
 
-        return ResultResponse("ok")
+        ResultResponse("ok")
     }
 
     @PutMapping("update/{isbn}")
     fun update(
         @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String,
         @RequestBody @Validated book: BookRequest
-    ): ResultResponse {
+    ): Mono<ResultResponse> = mono {
         updateBook.invoke(
             Book(
                 isbn = Isbn(isbn),
@@ -100,13 +104,14 @@ class BookController(
             )
         )
 
-        return ResultResponse("ok")
+        ResultResponse("ok")
     }
 
+    // これがS3をUploadするやつ
     @GetMapping("upload")
-    fun upload(): ResultResponse {
+    fun upload(): Mono<ResultResponse> = mono {
         val s3File = uploadBook.invoke()
 
-        return ResultResponse(s3File.uri())
+        ResultResponse(s3File.uri())
     }
 }

@@ -1,6 +1,7 @@
 package com.archetype.luxor.infra.api.client
 
 import com.archetype.luxor.infra.api.entity.ErrorResponse
+import kotlinx.coroutines.reactive.awaitFirst
 import mu.KotlinLogging
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -83,7 +84,7 @@ class LuxorWebClient(
 
         val isForm = form != null
 
-        fun <R> request(
+        suspend fun <R> request(
             responseToResult: (Response<R>) -> Mono<out Result<R>>
         ): Result<R> =
             LuxorWebClient(
@@ -133,7 +134,7 @@ class LuxorWebClient(
                 }
     }
 
-    fun <R> request(
+    suspend fun <R> request(
         responseToResult: (Response<R>) -> Mono<out Result<R>>
     ): Result<R> {
         val request = builder.client
@@ -191,7 +192,7 @@ class LuxorWebClient(
 
         return try {
             // blocking
-            request.block() ?: Failure(request = Failure.Request(builder.method.name, builder.uri))
+            request.awaitFirst()
         } catch (e: TimeoutException) {
             Failure(request = Failure.Request(builder.method.name, builder.uri))
         }

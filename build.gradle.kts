@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.5.5" apply false
+	id("org.springframework.boot") version "2.5.6" apply false
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("java")
-	kotlin("jvm") version "1.5.31" apply false
-	kotlin("plugin.spring") version "1.5.31" apply false
+	kotlin("jvm") version "1.6.0" apply false
+	kotlin("plugin.spring") version "1.6.0" apply false
 }
 
 repositories {
@@ -38,7 +38,14 @@ subprojects {
 		implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
+		implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 		implementation("com.google.guava:guava:31.0.1-jre")
+
+		// for blockhound
+		implementation("io.projectreactor.tools:blockhound:1.0.6.RELEASE")
+		runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-debug")
+
 		testImplementation("io.mockk:mockk:1.12.0")
 	}
 

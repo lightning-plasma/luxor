@@ -10,8 +10,11 @@ class UploadBook(
     private val bookRepository: BookRepository,
     private val bookFileRepository: BookFileRepository
 ) {
-    fun invoke(): S3File {
+    suspend fun invoke(): S3File {
         val books = bookRepository.fetchAll()
-        return bookFileRepository.upload(books)
+
+        // TODO booksをasyncでupload
+        // return bookFileRepository.upload(books)
+        return S3File.EMPTY
     }
 }

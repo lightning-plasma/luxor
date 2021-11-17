@@ -15,26 +15,17 @@ spring:
   web:
     resources:
       add-mappings: false
-  datasource:
-    url: jdbc:postgresql://localhost:5432/luxor
+
+  r2dbc:
+    url: r2dbc:pool:postgres://localhost:5432/luxor
     username: ${POSTGRES_USER:ramesses}
     password: ${POSTGRES_PASSWORD:secret}
-    driver-class-name: org.postgresql.Driver
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      maximum-pool-size: 10
-      idle-timeout: 100000
-      max-lifetime: 3000000
-      read-only: false
-      connection-init-sql: "SELECT 1"
-      auto-commit: false
-
-mybatis:
-  configuration:
-    cache-enabled: true
-    default-executor-type: reuse
-    map-underscore-to-camel-case: true
-    default-statement-timeout: 30
+    pool:
+      validation-query: SELECT 1
+      max-idle-time: 30m
+    properties:
+      sslMode: DISABLE
+      schema: main
 
 management:
   health:
@@ -72,3 +63,15 @@ gateway:
     protocol: http
     host: localhost
     port: 8080
+
+# log
+logging:
+  level:
+    com:
+      archetype:
+        luxor: DEBUG
+    io:
+      r2dbc:
+        postgresql:
+          QUERY: DEBUG # for queries
+          PARAM: DEBUG # for parameters
