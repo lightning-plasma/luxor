@@ -1,6 +1,7 @@
 package com.archetype.luxor.web.controller
 
 import com.archetype.luxor.web.response.Reply
+import kotlinx.coroutines.reactor.mono
 import mu.KotlinLogging
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 import javax.validation.constraints.Size
 
 @RestController
@@ -26,9 +28,9 @@ class HelloController(
     @GetMapping("{name}")
     fun hello(
         @PathVariable("name") @Size(min = 3, max = 10) name: String
-    ): Reply {
+    ): Mono<Reply> = mono {
         logger.debug { "name=$name" }
-        return Reply("Hello ${customLabel.text}, $name")
+        Reply("Hello ${customLabel.text}, $name")
     }
 
     companion object {
