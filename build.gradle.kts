@@ -39,7 +39,7 @@ subprojects {
 
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
 		implementation("com.google.guava:guava:31.0.1-jre")
-		testImplementation("io.mockk:mockk:1.12.0")
+		testImplementation("io.mockk:mockk:1.12.1")
 	}
 
 	// https://github.com/gradle/kotlin-dsl-samples/blob/master/samples/multi-kotlin-project-config-injection/build.gradle.kts
