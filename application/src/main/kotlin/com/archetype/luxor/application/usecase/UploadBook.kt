@@ -3,6 +3,7 @@ package com.archetype.luxor.application.usecase
 import com.archetype.luxor.application.repository.BookFileRepository
 import com.archetype.luxor.application.repository.BookRepository
 import com.archetype.luxor.domain.entity.S3File
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Component
 
 @Component
@@ -10,11 +11,9 @@ class UploadBook(
     private val bookRepository: BookRepository,
     private val bookFileRepository: BookFileRepository
 ) {
-    suspend fun invoke(): S3File {
+    fun invoke(): S3File = runBlocking {
         val books = bookRepository.fetchAll()
 
-        // TODO booksをasyncでupload
-        // return bookFileRepository.upload(books)
-        return S3File.EMPTY
+        bookFileRepository.upload(books)
     }
 }

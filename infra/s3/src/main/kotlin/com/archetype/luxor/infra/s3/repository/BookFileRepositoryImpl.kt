@@ -15,10 +15,10 @@ import java.time.format.DateTimeFormatter
 class BookFileRepositoryImpl(
     private val gateway: BookGateway
 ) : BookFileRepository {
-    override suspend fun upload(books: List<Book>): S3File {
+    override fun upload(books: List<Book>): S3File {
         val key = FILENAME_FORMAT.format(
             DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
-        )
+        ) + FILE_SUFFIX
 
         val bookRows = books.map {
             BookFileRow(
@@ -31,9 +31,10 @@ class BookFileRepositoryImpl(
         }
 
         return try {
+            // ここでBlocking. Fileを作成する
             val path = FileUtility.createTemporaryCsvFile(bookRows, FILE_SUFFIX)
 
-            gateway.upload(path, key, true)
+            gateway.upload(path, key)
         } catch (th: Throwable) {
             logger.info { th }
 
@@ -43,7 +44,7 @@ class BookFileRepositoryImpl(
 
     companion object {
         private const val FILE_SUFFIX = ".csv"
-        private const val FILENAME_FORMAT = "boos-%s"
+        private const val FILENAME_FORMAT = "books-%s"
 
         private val logger = KotlinLogging.logger { }
     }

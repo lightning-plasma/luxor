@@ -1,7 +1,6 @@
 package com.archetype.luxor.infra.s3.utils
 
 import com.archetype.luxor.infra.s3.entity.CsvSerializable
-import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.FileInputStream
@@ -19,7 +18,7 @@ object FileUtility {
 
     // inline functionからアクセスできるようにpublicにする
     val mapper = CsvMapper().apply {
-        registerModule(KotlinModule())
+        KotlinModule.Builder().build()
     }
 
     // 特に拡張性を考慮していません。必要に応じてoptionとかを実装してください

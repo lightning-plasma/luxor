@@ -7,6 +7,8 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+// https://cloud.spring.io/spring-cloud-gateway/multi/multi__reactor_netty_access_logs.html
+// -Dreactor.netty.http.server.accessLogEnabled=true を設定すること
 class AccessLoggingHttpTraceRepositoryDecorator(
     private val repository: HttpTraceRepository
 ) : HttpTraceRepository {

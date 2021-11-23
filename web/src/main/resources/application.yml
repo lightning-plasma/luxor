@@ -17,12 +17,15 @@ spring:
       add-mappings: false
 
   r2dbc:
-    url: r2dbc:pool:postgres://localhost:5432/luxor
+    url: r2dbc:postgres://localhost:5432/luxor
     username: ${POSTGRES_USER:ramesses}
     password: ${POSTGRES_PASSWORD:secret}
     pool:
       validation-query: SELECT 1
       max-idle-time: 30m
+      enabled: true
+      # max-size: 10     # default
+      # initial-size: 10 # default
     properties:
       sslMode: DISABLE
       schema: main
