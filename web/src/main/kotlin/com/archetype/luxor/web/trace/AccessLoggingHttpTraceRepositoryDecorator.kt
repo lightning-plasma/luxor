@@ -8,7 +8,6 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 // Spring ActuatorからAccessLogを見る
-//
 // https://cloud.spring.io/spring-cloud-gateway/multi/multi__reactor_netty_access_logs.html
 // -Dreactor.netty.http.server.accessLogEnabled=true を設定してそちらを見ても良い
 class AccessLoggingHttpTraceRepositoryDecorator(
