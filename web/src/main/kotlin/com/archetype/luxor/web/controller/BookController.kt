@@ -109,9 +109,9 @@ class BookController(
 
     // このfunctionは Blocking Code なので実行時はBlockHoundをoffにすること
     @GetMapping("upload")
-    fun upload(): ResultResponse {
+    fun upload(): Mono<ResultResponse> = mono {
         val s3File = uploadBook.invoke()
 
-        return ResultResponse(s3File.uri())
+        ResultResponse(s3File.uri())
     }
 }
