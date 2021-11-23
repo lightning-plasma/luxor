@@ -54,6 +54,11 @@ class ApiErrorAdvice(
     fun handleResourceAccessError(e: ResourceAccessError): ErrorResponse =
         ErrorResponse(e.message ?: "internal server error ;-(")
 
+    @ExceptionHandler(value = [Throwable::class])
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleThrowable(th: Throwable): ErrorResponse =
+        ErrorResponse(th.message ?: "internal server error ;-(")
+
     private fun validationErrorMessage(ex: MethodArgumentNotValidException): String =
         ex.bindingResult.allErrors.joinToString(", ") {
             messageSourceAccessor.getMessage(it)
