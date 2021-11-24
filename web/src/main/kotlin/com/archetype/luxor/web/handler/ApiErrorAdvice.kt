@@ -1,4 +1,4 @@
-package com.archetype.luxor.web.advice
+package com.archetype.luxor.web.handler
 
 import com.archetype.luxor.domain.error.NotFoundError
 import com.archetype.luxor.domain.error.ResourceAccessError
