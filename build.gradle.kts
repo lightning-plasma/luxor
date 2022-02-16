@@ -31,9 +31,6 @@ subprojects {
 	java.targetCompatibility = JavaVersion.VERSION_11
 
 	dependencies {
-		val implementation by configurations
-		val testImplementation by configurations
-
 		// https://docs.gradle.org/current/userguide/platforms.html
 		implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 
