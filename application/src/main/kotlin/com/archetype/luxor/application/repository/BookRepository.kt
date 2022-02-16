@@ -4,11 +4,11 @@ import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
 
 interface BookRepository {
-    fun fetchAll(): List<Book>
+    suspend fun fetchAll(): List<Book>
 
-    fun fetch(isbn: Isbn): Book
+    suspend fun fetch(isbn: Isbn): Book
 
-    fun register(book: Book)
+    suspend fun register(book: Book)
 
-    fun update(book: Book)
+    suspend fun update(book: Book)
 }

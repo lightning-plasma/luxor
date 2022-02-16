@@ -5,4 +5,8 @@ data class S3File(
     private val key: String
 ) {
     fun uri():String = "s3://$bucket/$key"
+
+    companion object {
+        val EMPTY = S3File("", "")
+    }
 }

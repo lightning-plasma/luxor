@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 class BookRatingRepositoryImpl(
     private val gateway: BookRatingGateway
 ) : BookRatingRepository {
-    override fun fetch(isbn: Isbn): BookAttribute {
+    override suspend fun fetch(isbn: Isbn): BookAttribute {
         return when(val result = gateway.fetch(isbn)) {
             is Success -> BookAttribute(
                 isbn = isbn,

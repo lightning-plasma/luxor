@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 class BookGateway(
     localS3ClientFactory: LocalS3ClientFactory
 ) : S3Gateway(
-    s3Client = localS3ClientFactory.create(),
+    s3AsyncClient = localS3ClientFactory.create(),
     bucket = BUCKET
 ) {
     companion object {

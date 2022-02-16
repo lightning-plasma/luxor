@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional
 class UpdateBook(
     private val bookRepository: BookRepository
 ) {
-    fun invoke(book: Book) {
+    suspend fun invoke(book: Book) =
         bookRepository.update(book)
-    }
 }

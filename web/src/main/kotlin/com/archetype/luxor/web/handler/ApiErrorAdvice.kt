@@ -1,4 +1,4 @@
-package com.archetype.luxor.web.advice
+package com.archetype.luxor.web.handler
 
 import com.archetype.luxor.domain.error.NotFoundError
 import com.archetype.luxor.domain.error.ResourceAccessError
@@ -53,6 +53,11 @@ class ApiErrorAdvice(
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleResourceAccessError(e: ResourceAccessError): ErrorResponse =
         ErrorResponse(e.message ?: "internal server error ;-(")
+
+    @ExceptionHandler(value = [Throwable::class])
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleThrowable(th: Throwable): ErrorResponse =
+        ErrorResponse(th.message ?: "internal server error ;-(")
 
     private fun validationErrorMessage(ex: MethodArgumentNotValidException): String =
         ex.bindingResult.allErrors.joinToString(", ") {

@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 class BookRatingGateway(
     private val factory: BookRatingClientFactory
 ) {
-    fun fetch(isbn: Isbn): Result<BookRatingResponse> =
+    suspend fun fetch(isbn: Isbn): Result<BookRatingResponse> =
         factory.create()
             .get()
             .uri("/book-rating/${isbn.asString()}")
