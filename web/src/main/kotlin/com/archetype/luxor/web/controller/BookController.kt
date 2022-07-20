@@ -54,7 +54,7 @@ class BookController(
 
     @GetMapping("{isbn}")
     fun get(
-        @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String
+        @PathVariable("isbn") @Pattern(regexp = "^\\d{13}$") isbn: String
     ): Mono<BookResponse> = mono {
         val book = fetchBook.get(Isbn(isbn))
 

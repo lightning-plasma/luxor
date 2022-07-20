@@ -34,4 +34,11 @@ class Failure<Nothing>(
     fun isNotFound() = response?.statusCode == 404
     fun isInternalServerError() = response?.statusCode == 500
     fun isServiceUnavailable() = response?.statusCode == 503
+
+    companion object {
+        val CIRCUIT_BREAKER_ERROR = Failure<Nothing>(
+            message = "circuit breaker",
+            request = Request("xxx", "xxx")
+        )
+    }
 }

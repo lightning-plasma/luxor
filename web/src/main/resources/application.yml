@@ -33,7 +33,9 @@ spring:
 management:
   health:
     db:
-      enabled: false
+      enabled: true
+    circuitbreakers:
+      enabled: true
   server:
     port: 8082
   # https://spring.pleiades.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.exposing
@@ -42,6 +44,10 @@ management:
       base-path: "/"
       exposure:
         include: "*"
+  endpoint:
+    health:
+      # circuitBreakerの状態を確認する (private subnetにあってALBとかでアクセス制御していればalwaysで良いと思う)
+      show-details: always
   trace:
     http:
       # see: org.springframework.boot.actuate.trace.http.Include
@@ -78,3 +84,31 @@ logging:
         postgresql:
           QUERY: DEBUG # for queries
           PARAM: DEBUG # for parameters
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      # https://resilience4j.readme.io/docs/circuitbreaker
+      # https://resilience4j.readme.io/docs/getting-started-3
+      # Testで確認しやすいようにした設定なので本番では調整のこと
+      default:
+        # slidingWindowTypeをカウントベースにする (default / その他はTIME_BASED)
+        sliding-window-type: COUNT_BASED
+        # ここで指定した数のコール数を保持してエラーレートの計算に利用する
+        sliding-window-size: 3
+        # HALF_OPENの時に許可される呼び出しの数
+        permitted-number-of-calls-in-half-open-state: 3
+        # OPENからHALF_OPENに移行する前に待機する時間
+        wait-duration-in-open-state: 10s
+        # 失敗率の閾値。この数値を超えて失敗しているとOPENに移行する
+        failure-rate-threshold: 50
+        # CircuitBreaker Eventを保持するバッファ (health check用)
+        event-consumer-buffer-size: 100
+        # ヘルスチェックエンドでサーキットブレーカーのステータスが確認可能になる
+        register-health-indicator: true
+
+    # custom設定 (defaultを上書きする)
+    instances:
+      bookRatingService:
+        base-config: default
+        failure-rate-threshold: 5
