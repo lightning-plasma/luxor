@@ -1,6 +1,8 @@
 package com.archetype.luxor.infra.api.client
 
 import com.archetype.luxor.infra.api.entity.ErrorResponse
+import io.github.resilience4j.circuitbreaker.CircuitBreaker
+import io.github.resilience4j.reactor.circuitbreaker.operator.CircuitBreakerOperator
 import kotlinx.coroutines.reactive.awaitFirst
 import mu.KotlinLogging
 import org.springframework.http.HttpMethod
@@ -191,7 +193,6 @@ class LuxorWebClient(
             }
 
         return try {
-            // blocking
             request.awaitFirst()
         } catch (e: TimeoutException) {
             Failure(request = Failure.Request(builder.method.name, builder.uri))

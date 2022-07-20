@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 
 @Gateway
 class BookRatingGateway(
-    private val factory: BookRatingClientFactory
+    private val factory: BookRatingClientFactory,
 ) {
     suspend fun fetch(isbn: Isbn): Result<BookRatingResponse> =
         factory.create()

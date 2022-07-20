@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:14-bullseye
 
 # localize (debian-baseのpostgresを日本語対応にする。13 baseでは必要だったが 14:debian-11だと設定不要だった)
 #RUN apt-get update \
