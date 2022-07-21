@@ -9,7 +9,7 @@ import com.archetype.luxor.infra.api.gateway.BookRatingGateway
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import mu.KotlinLogging
 import org.springframework.stereotype.Repository
-import java.util.concurrent.*
+import java.util.concurrent.TimeUnit
 
 @Repository
 class BookRatingRepositoryImpl(
