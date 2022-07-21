@@ -106,9 +106,14 @@ resilience4j:
         event-consumer-buffer-size: 100
         # ヘルスチェックエンドでサーキットブレーカーのステータスが確認可能になる
         register-health-indicator: true
+        # 自動でHALF_OPENに移行
+        automatic-transition-from-open-to-half-open-enabled: true
 
     # custom設定 (defaultを上書きする)
     instances:
       bookRatingService:
         base-config: default
         failure-rate-threshold: 5
+        # Error class指定
+        # record-exceptions:
+        #   - org.springframework.web.reactive.function.client.WebClientResponseException.InternalServerError

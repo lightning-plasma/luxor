@@ -21,9 +21,7 @@ class BookRatingRepositoryImpl(
 
     override suspend fun fetch(isbn: Isbn): BookAttribute {
         // open / forcedOpenのときに CallNotPermittedExceptionをThrowする
-        try {
-            circuitBreaker.acquirePermission()
-        } catch (e: CallNotPermittedException) {
+        if (circuitBreaker.tryAcquirePermission()) {
             logger.warn("circuit breaker is open")
             // circuitBreakerがOpenのときは空と同じ扱い。
             return BookAttribute(
