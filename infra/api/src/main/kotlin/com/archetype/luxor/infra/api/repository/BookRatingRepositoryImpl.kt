@@ -6,7 +6,6 @@ import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.infra.api.client.Failure
 import com.archetype.luxor.infra.api.client.Success
 import com.archetype.luxor.infra.api.gateway.BookRatingGateway
-import io.github.resilience4j.circuitbreaker.CallNotPermittedException
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import mu.KotlinLogging
 import org.springframework.stereotype.Repository
@@ -21,7 +20,7 @@ class BookRatingRepositoryImpl(
 
     override suspend fun fetch(isbn: Isbn): BookAttribute {
         // open / forcedOpenのときに CallNotPermittedExceptionをThrowする
-        if (circuitBreaker.tryAcquirePermission()) {
+        if (!circuitBreaker.tryAcquirePermission()) {
             logger.warn("circuit breaker is open")
             // circuitBreakerがOpenのときは空と同じ扱い。
             return BookAttribute(
