@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import reactor.blockhound.BlockHound
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.archetype.luxor", "org.mapstruct.extensions.spring"])
 class LuxorApplication
 
 fun main(args: Array<String>) {

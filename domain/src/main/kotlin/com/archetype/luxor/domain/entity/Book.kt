@@ -14,4 +14,7 @@ data class Book(
             genre = attr.genre,
             rating = attr.rating
         )
+
+    // MapStructではValue ClassのMappingができないのでbookから参照
+    fun getIsbnAsString(): String = isbn.asString()
 }
