@@ -52,6 +52,8 @@ class BookController(
     ): Mono<BookResponse> = mono {
         val book = fetchBook.get(Isbn(isbn))
 
+        // https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#core-convert-ConversionService-API
+        // https://mapstruct.org/documentation/spring-extensions/reference/html/
         conversionService.convert(book, BookResponse::class.java)!!
     }
 
