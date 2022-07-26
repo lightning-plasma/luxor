@@ -1,5 +1,6 @@
 plugins {
     id("org.springframework.boot")
+    kotlin("kapt")
 }
 
 dependencies {
@@ -14,6 +15,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+    implementation("org.mapstruct:mapstruct:1.5.2.Final")
+    implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.2")
+    kapt("org.mapstruct.extensions.spring:mapstruct-spring-extensions:0.1.2")
+    kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.mockito")

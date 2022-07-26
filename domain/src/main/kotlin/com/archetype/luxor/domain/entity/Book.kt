@@ -14,4 +14,9 @@ data class Book(
             genre = attr.genre,
             rating = attr.rating
         )
+
+    // MapStruct用
+    // MapStruct自動生成のコードは Isbn classではなく、String classに見えてしまうのでcompileできない
+    // そのため、Isbn classを中継しないようにする必要がある (Project Valhalla次第？)
+    fun getIsbnAsString(): String = isbn.asString()
 }

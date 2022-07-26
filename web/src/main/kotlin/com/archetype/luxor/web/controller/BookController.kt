@@ -11,6 +11,7 @@ import com.archetype.luxor.web.response.BookResponse
 import com.archetype.luxor.web.response.ResultResponse
 import kotlinx.coroutines.reactor.mono
 import kotlinx.coroutines.runBlocking
+import org.springframework.core.convert.ConversionService
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,22 +34,15 @@ class BookController(
     private val fetchBook: FetchBook,
     private val registerBook: RegisterBook,
     private val updateBook: UpdateBook,
-    private val uploadBook: UploadBook
+    private val uploadBook: UploadBook,
+    private val conversionService: ConversionService,
 ) {
     // request mappingはURI変数とワイルドカードの数が少ないパターンに優先的にマッチする
     // https://blog.tagbangers.co.jp/2015/05/21/request-mapping-priority
     @GetMapping
     fun list(): Mono<List<BookResponse>> = mono {
         fetchBook.list().map {
-            BookResponse(
-                isbn = it.isbn.asString(),
-                title = it.title,
-                author = it.author,
-                publisher = it.publisher,
-                price = it.price,
-                genre = it.genre,
-                rating = it.rating
-            )
+            conversionService.convert(it, BookResponse::class.java)!!
         }
     }
 
@@ -58,15 +52,9 @@ class BookController(
     ): Mono<BookResponse> = mono {
         val book = fetchBook.get(Isbn(isbn))
 
-        BookResponse(
-            isbn = book.isbn.asString(),
-            title = book.title,
-            author = book.author,
-            publisher = book.publisher,
-            price = book.price,
-            genre = book.genre,
-            rating = book.rating
-        )
+        // https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#core-convert-ConversionService-API
+        // https://mapstruct.org/documentation/spring-extensions/reference/html/
+        conversionService.convert(book, BookResponse::class.java)!!
     }
 
     @PostMapping("new")
@@ -90,7 +78,7 @@ class BookController(
 
     @PutMapping("update/{isbn}")
     fun update(
-        @PathVariable("isbn") @Pattern(regexp = "^[0-9]{13}$") isbn: String,
+        @PathVariable("isbn") @Pattern(regexp = "^\\d{13}$") isbn: String,
         @RequestBody @Validated book: BookRequest
     ): Mono<ResultResponse> = mono {
         updateBook.invoke(
