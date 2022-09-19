@@ -43,7 +43,7 @@ subprojects {
 		implementation("io.projectreactor.tools:blockhound:1.0.6.RELEASE")
 		runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-debug")
 
-		testImplementation("io.mockk:mockk:1.12.2")
+		testImplementation("io.mockk:mockk:1.12.8")
 	}
 
 	// https://github.com/gradle/kotlin-dsl-samples/blob/master/samples/multi-kotlin-project-config-injection/build.gradle.kts
