@@ -14,7 +14,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
     implementation("org.mapstruct:mapstruct:1.5.2.Final")
     implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.2")
     kapt("org.mapstruct.extensions.spring:mapstruct-spring-extensions:0.1.2")
