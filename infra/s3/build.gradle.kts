@@ -4,7 +4,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation(platform("software.amazon.awssdk:bom:2.17.130"))
+    implementation(platform("software.amazon.awssdk:bom:2.18.6"))
     implementation("software.amazon.awssdk:s3")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
