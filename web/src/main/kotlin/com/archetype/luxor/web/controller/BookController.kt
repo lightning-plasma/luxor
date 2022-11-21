@@ -9,8 +9,9 @@ import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.web.request.BookRequest
 import com.archetype.luxor.web.response.BookResponse
 import com.archetype.luxor.web.response.ResultResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.mono
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.springframework.core.convert.ConversionService
 import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
@@ -96,14 +97,12 @@ class BookController(
         ResultResponse("ok")
     }
 
-    // このfunctionは Blocking Code なので実行時はBlockHoundをoffにすること
-    // File Writeが Blockingなので妥協
     @GetMapping("upload")
-    fun upload(): ResultResponse {
-        val s3File = runBlocking {
+    fun upload(): Mono<ResultResponse> = mono {
+        val s3File = withContext(Dispatchers.IO) {
             uploadBook.invoke()
         }
 
-        return ResultResponse(s3File.uri())
+        ResultResponse(s3File.uri())
     }
 }
