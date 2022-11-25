@@ -37,7 +37,7 @@ subprojects {
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
 		implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-		implementation("com.google.guava:guava:31.0.1-jre")
+		implementation("com.google.guava:guava:31.1-jre")
 
 		// for blockhound
 		implementation("io.projectreactor.tools:blockhound:1.0.6.RELEASE")
