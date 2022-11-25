@@ -5,23 +5,20 @@ import com.archetype.luxor.domain.entity.Book
 import com.archetype.luxor.domain.entity.Isbn
 import com.archetype.luxor.domain.error.NotFoundError
 import com.archetype.luxor.domain.error.ResourceAccessError
+import com.archetype.luxor.infra.persistence.mapper.BookMapper
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DuplicateKeyException
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
-import org.springframework.data.relational.core.query.Criteria.where
-import org.springframework.data.relational.core.query.Query.query
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
 @Repository
 class BookRepositoryImpl(
-    private val template: R2dbcEntityTemplate,
+    private val bookMapper: BookMapper,
 ) : BookRepository {
     override suspend fun fetchAll(): List<Book> = try {
-        template.select(com.archetype.luxor.infra.persistence.entity.Book::class.java)
-            .all()
+        bookMapper.findAll()
             .collectList()
             .awaitFirst()
             .map {
@@ -41,15 +38,7 @@ class BookRepositoryImpl(
 
     override suspend fun fetch(isbn: Isbn): Book =
         try {
-            val book = template
-                .select(com.archetype.luxor.infra.persistence.entity.Book::class.java)
-                .from("main.book")
-                .matching(
-                    query(
-                        where("isbn").`is`(isbn.asString()),
-                    )
-                )
-                .one()
+            val book = bookMapper.findByIsbn(isbn.asString())
                 .awaitFirstOrNull() ?: throw NotFoundError("${isbn.asString()} is not found")
 
             Book(
@@ -78,7 +67,7 @@ class BookRepositoryImpl(
         )
 
         try {
-            template.insert(entity).awaitFirst()
+            bookMapper.register(entity).awaitFirst()
         } catch (e: DuplicateKeyException) {
             throw ResourceAccessError(e, "This book is already registered")
         } catch (e: DataAccessException) {
@@ -95,12 +84,11 @@ class BookRepositoryImpl(
                 author = book.author,
                 publisher = book.publisher,
                 price = book.price,
-                createdAt = now,
+                createdAt = null,
                 updatedAt = now
             )
 
-            template.update(entity).awaitFirst()
-
+            bookMapper.update(entity).awaitFirst()
         } catch (e: DataAccessException) {
             throw ResourceAccessError(e, "BookRepository#updateでエラーが発生しました")
         }

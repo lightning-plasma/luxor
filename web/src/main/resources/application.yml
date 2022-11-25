@@ -17,18 +17,24 @@ spring:
       add-mappings: false
 
   r2dbc:
-    url: r2dbc:postgres://localhost:5432/luxor
-    username: ${POSTGRES_USER:ramesses}
-    password: ${POSTGRES_PASSWORD:secret}
-    pool:
-      validation-query: SELECT 1
-      max-idle-time: 30m
-      enabled: true
-      # max-size: 10     # default
-      # initial-size: 10 # default
     properties:
       sslMode: DISABLE
       schema: main
+    mybatis:
+      r2dbc-url: r2dbc:postgres://localhost:5432/luxor
+      username: ${POSTGRES_USER:ramesses}
+      password: ${POSTGRES_PASSWORD:secret}
+      pool:
+        validation-query: SELECT 1
+        max-idle-time: 30m
+        max-size: 10
+        initial-size: 1
+
+r2dbc:
+  mybatis:
+    configuration:
+      map-underscore-to-camel-case: true
+      default-executor-type: reuse
 
 management:
   health:
