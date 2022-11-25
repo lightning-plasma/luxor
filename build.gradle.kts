@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.0" apply false
+	id("org.springframework.boot") version "2.7.5" apply false
 	id("io.spring.dependency-management") version "1.1.0"
 	id("java")
 	kotlin("jvm") version "1.7.21" apply false
@@ -38,6 +38,9 @@ subprojects {
 		implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 		implementation("com.google.guava:guava:31.1-jre")
+		implementation("org.slf4j:jul-to-slf4j:2.0.3")
+		implementation("org.slf4j:slf4j-api:2.0.3")
+		implementation("org.slf4j:slf4j-simple:2.0.3")
 
 		// for blockhound
 		implementation("io.projectreactor.tools:blockhound:1.0.6.RELEASE")
