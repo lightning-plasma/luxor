@@ -52,6 +52,14 @@ class BookRepositoryImpl(
                 .one()
                 .awaitFirstOrNull() ?: throw NotFoundError("${isbn.asString()} is not found")
 
+            // raw sql
+            // val book2 = template.databaseClient
+            //     .sql("SELECT * FROM main.book WHERE isbn = :isbn LIMIT 1")
+            //     .bind("isbn", isbn.asString())
+            //     .fetch()
+            //     .one()
+            //     .awaitFirstOrNull() ?: throw NotFoundError("${isbn.asString()} is not found")
+
             Book(
                 isbn = Isbn(book.isbn),
                 title = book.title,
