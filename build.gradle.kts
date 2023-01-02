@@ -5,7 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.0"
 	id("java")
 	kotlin("jvm") version "1.7.21" apply false
-	kotlin("plugin.spring") version "1.7.21" apply false
+	kotlin("plugin.spring") version "1.8.0" apply false
 }
 
 repositories {
