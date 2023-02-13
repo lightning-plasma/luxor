@@ -16,7 +16,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
-    implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.2")
+    implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:1.0.0")
     kapt("org.mapstruct.extensions.spring:mapstruct-spring-extensions:0.1.2")
     kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
 
